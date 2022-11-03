@@ -1,17 +1,28 @@
 public class Money {
+    private long amount;
+    private final Currency currency;
 
-  private long amount;
+    public Currency getCurrency() {
+        return currency;
+    }
 
-  public Money(long amount){
-    this.amount = amount;
-  }
+    public Money(long amount, Currency currency) {
+        this.amount = amount;
+        this.currency = currency;
+    }
 
-  public void add(long amount){
-    this.amount += amount;
-  }
+    public Money add(Money money) {
+        long amount = this.amount + money.getAmount();
+        Money result = new Money(amount, currency);
+        return result;
+    }
 
-  public long getAmount(){
-    return this.amount;
-  }
+    public long getAmount() {
+        return this.amount;
+    }
+
+    public boolean moneyEquals(Money money) {
+        return this.getAmount() == (money.getAmount());
+    }
 
 }
