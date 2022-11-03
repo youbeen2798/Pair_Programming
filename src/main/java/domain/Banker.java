@@ -11,8 +11,19 @@ public class Banker implements Bank {
 
         double exchangedMoney = money.getAmount() * (originRate / aimRate);
 
+        if(currency.equals(Currency.KRW)){
+            double tmp = (int) (exchangedMoney % 10);
+            if(tmp >= 5){ //6
+                exchangedMoney += (10 - tmp); //4
+            }
+            else{
+                exchangedMoney -= tmp;
+            }
+        }
         Money resultMoney = new Money(exchangedMoney, currency);
+
 
         return resultMoney;
     }
+
 }
