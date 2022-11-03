@@ -61,7 +61,7 @@ public class MoneyTest {
     @Test
     @DisplayName("5.25$ + 5.25$ = 10.50$ (소숫점 이하 2자리)")
     void money_DOLLAR_decimalPoint_add_success() {
-        Money decimalDollarMoney1 = new Money(5.25, Currency.DOLLAR);
+        Money decimalDollarMoney1 = new Monㅅey(5.25, Currency.DOLLAR);
         Money decimalDollarMoney2 = new Money(5.25, Currency.DOLLAR);
 
         Money resultMoney = decimalDollarMoney1.add(decimalDollarMoney2);
