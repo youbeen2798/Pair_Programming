@@ -1,7 +1,7 @@
 package domain;
 
 public enum Currency {
-    KRW(0.001), DOLLAR(1);
+    KRW(0.001), DOLLAR(1.0);
 
     private double exchangeRate;
 
