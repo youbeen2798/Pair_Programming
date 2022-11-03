@@ -41,7 +41,7 @@ public class MoneyTest {
     @DisplayName("equals 원화 성공 테스트")
     void money_KRW_equals_success() {
         Money money2 = new Money(1000L, Currency.KRW);
-        assertThat(money2.equals(krwMoney)).isTrue();
+        assertThat(money2).isEqualTo(krwMoney);
     }
 
     @Test
