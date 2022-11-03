@@ -15,8 +15,12 @@ public class Money {
         }
 
         // 소수점 아래 두자리까지 반올림하여 표현
-        this.amount = Math.round(amount * 100) / 100.0;
+        this.amount = roundOffAt3rdDecimalPoint(amount);
         this.currency = currency;
+    }
+
+    public double roundOffAt3rdDecimalPoint(double amount) {
+        return Math.round(amount * 100) / 100.0;
     }
 
     public Currency getCurrency() {
@@ -28,25 +32,30 @@ public class Money {
     }
 
     public Money add(Money money) {
-        checkCurrency(money);
+        if (isSameCurrency(money.getCurrency())) {
+            double amount = this.amount + money.getAmount();
+            Money result = new Money(amount, currency);
 
-        double amount = this.amount + money.getAmount();
-        Money result = new Money(amount, currency);
-        return result;
+            return result;
+        }
+        throw new InconsistentCurrencyException(this.currency, money.getCurrency());
+    }
+
+    public boolean isSameCurrency(Currency currency) {
+        if (this.currency.equals(currency)) {
+            return true;
+        }
+        return false;
     }
 
     public Money subtract(Money money) {
-        checkCurrency(money);
+        if (isSameCurrency(money.getCurrency())) {
+            double amount = this.amount - money.getAmount();
+            Money result = new Money(amount, currency);
 
-        double amount = this.amount - money.getAmount();
-        Money result = new Money(amount, currency);
-        return result;
-    }
-
-    private void checkCurrency(Money money) {
-        if (!currency.equals(money.getCurrency())) {
-            throw new InconsistentCurrencyException(this.currency, money.getCurrency());
+            return result;
         }
+        throw new InconsistentCurrencyException(this.currency, money.getCurrency());
     }
 
     @Override

@@ -1,19 +1,18 @@
 package domain;
 
+import exception.ConsistentCurrencyException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.*;
 
 class BankTest {
     private Money krwMoney;
     private Money dollarMoney;
     private Money eurMoney;
-
     private Bank bank;
 
     @BeforeEach
@@ -33,17 +32,17 @@ class BankTest {
     @Test
     @DisplayName("통화는 달러화와 원화만이 존재, 환율은 1달러 <-> 1,000원")
     void bank_exchange_dollarToKRW() {
-        // 1달러
         when(dollarMoney.getAmount()).thenReturn(1.0);
 
         Money result = bank.exchange(dollarMoney, Currency.KRW);
         assertThat(result.getAmount()).isEqualTo(1000);
+
+        verify(dollarMoney, times(1)).getAmount();
     }
 
     @Test
     @DisplayName("1,000원 -환전-> 1$")
     void bank_exchange_KRWToDollar() {
-        // 1달러
         when(krwMoney.getAmount()).thenReturn(1000.0);
 
         Money result = bank.exchange(krwMoney, Currency.DOLLAR);
@@ -91,7 +90,6 @@ class BankTest {
         assertThat(result).isEqualTo(new Money(0.01, Currency.DOLLAR));
     }
 
-
     @Test
     @DisplayName("1달러 <-> 1.02유료 성공 케이스")
     void bank_exchange_dollarToEUR_success() {
@@ -103,15 +101,12 @@ class BankTest {
     }
 
     @Test
-    @DisplayName("1달러 <-> 1.02유료 실패 케이스")
-    void bank_exchange_dollarToEUR_fail() {
-        // 1달러
-        when(dollarMoney.getAmount()).thenReturn(1.0);
+    @DisplayName("동일한 통화로 환전 시도하는 경우 실패")
+    void bank_exchange_sameCurrency_then_fail() {
+        Money money = new Money(1.0, Currency.DOLLAR);
 
-        Money result = bank.exchange(dollarMoney, Currency.EUR);
-        assertThat(result.getAmount()).isNotEqualTo(1.03);
+        assertThatThrownBy(() -> bank.exchange(money, Currency.DOLLAR))
+                .isInstanceOf(ConsistentCurrencyException.class)
+                .hasMessageContainingAll("Can not exchange");
     }
-
-
-
 }
