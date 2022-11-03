@@ -1,0 +1,5 @@
+package domain;
+
+public interface Bank {
+    Money exchange(Money money);
+}

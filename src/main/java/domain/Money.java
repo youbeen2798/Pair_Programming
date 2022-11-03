@@ -1,12 +1,15 @@
+package domain;
+
+import exception.InconsistentCurrencyException;
 import exception.InvalidMoneyException;
 
 import java.util.Objects;
 
 public class Money {
-    private long amount;
+    private double amount;
     private final Currency currency;
 
-    public Money(long amount, Currency currency) {
+    public Money(double amount, Currency currency) {
         if (amount < 0) {
             throw new InvalidMoneyException();
         }
@@ -27,7 +30,7 @@ public class Money {
     public Money add(Money money) {
         checkCurrency(money);
 
-        long amount = this.amount + money.getAmount();
+        double amount = this.amount + money.getAmount();
         Money result = new Money(amount, currency);
         return result;
     }
@@ -38,7 +41,7 @@ public class Money {
         }
     }
 
-    public long getAmount() {
+    public double getAmount() {
         return this.amount;
     }
 
@@ -57,7 +60,7 @@ public class Money {
     public Money subtract(Money money) {
         checkCurrency(money);
 
-        long amount = this.amount - money.getAmount();
+        double amount = this.amount - money.getAmount();
         Money result = new Money(amount, currency);
         return result;
     }
