@@ -3,6 +3,7 @@ package domain;
 import exception.InconsistentCurrencyException;
 import exception.InvalidMoneyException;
 
+import java.util.Currency;
 import java.util.Objects;
 
 public class Money {
